@@ -1,7 +1,6 @@
-/* n1
-   найти и вывести на экран название продуктов и название категорий товаров, к которым относится этот продукт,
-   с учетом того, что в выборку попадут только товары с цветом Red и ценой не менее 100
- */
+### n1
+####   найти и вывести на экран название продуктов и название категорий товаров, к которым относится этот продукт, с учетом того, что в выборку попадут только товары с цветом Red и ценой не менее 100
+ ```sql
 SELECT p.Name, pc.Name
 FROM Production.Product as p
     JOIN Production.ProductSubcategory as psc
@@ -9,26 +8,29 @@ FROM Production.Product as p
     JOIN Production.ProductCategory as pc
         ON psc.ProductCategoryID = pc.ProductCategoryID
 WHERE p.Color = 'Red' and p.ListPrice >= 100
+```
 
-/* n2
-   вывести на экран названия подкатегорий с совпадающими именами
- */
+### n2
+####   вывести на экран названия подкатегорий с совпадающими именами
+```sql
 SELECT psc1.Name
 FROM Production.ProductSubcategory as psc1
     JOIN Production.ProductSubcategory as psc2
         ON psc1.ProductSubcategoryID != psc2.ProductSubcategoryID and psc1.Name = psc2.Name
+```
 
-/* n2.2
-   вывести на экран названия подкатегорий с совпадающими именами
- */
+### n2.2
+####  вывести на экран названия подкатегорий с совпадающими именами
+```sql
 SELECT psc.Name
 FROM Production.ProductSubcategory as psc
 GROUP BY ProductSubcategoryID, Name
 HAVING count(*) > 1
+```
 
-/* n3
-   вывести на экран названия категорий и количество товаров в данной категории
- */
+### n3
+####   вывести на экран названия категорий и количество товаров в данной категории
+```sql
 SELECT pc.Name, count(*)
 FROM Production.Product as p
     JOIN Production.ProductSubcategory as psc
@@ -36,40 +38,43 @@ FROM Production.Product as p
     JOIN Production.ProductCategory as pc
         ON psc.ProductCategoryID = pc.ProductCategoryID
 GROUP BY pc.Name
+```
 
-/* n4
-   вывести на экран название подкатегории, а также количество товаров в данной подкатегории с учетом ситуации,
-   что могут существовать подкатегории с одинаковыми именами
- */
+### n4
+####   вывести на экран название подкатегории, а также количество товаров в данной подкатегории с учетом ситуации, что могут существовать подкатегории с одинаковыми именами
+```sql
 SELECT distinct psc.Name, count(*)
 FROM Production.Product as p
     JOIN Production.ProductSubcategory as psc
         ON p.ProductSubcategoryID = psc.ProductSubcategoryID
 GROUP BY psc.Name
+```
 
-/* n5
-   вывести на экран название первых трех подкатегорий с наибольшим количеством товаров
- */
+### n5
+#### вывести на экран название первых трех подкатегорий с наибольшим количеством товаров
+```sql
 SELECT top 3 psc.Name
 FROM Production.Product as p
     JOIN Production.ProductSubcategory as psc
         ON p.ProductSubcategoryID = psc.ProductSubcategoryID
 GROUP BY psc.Name
 ORDER BY count(*) desc
+```
 
-/* n6
-   вывести на экран название подкатегории и максимальную цену продукта с цветом Red в этой подкатегории
- */
+### n6
+#### вывести на экран название подкатегории и максимальную цену продукта с цветом Red в этой подкатегории
+```sql
 SELECT psc.Name, max(ListPrice)
 FROM Production.Product as p
     JOIN Production.ProductSubcategory as psc
         ON p.ProductSubcategoryID = psc.ProductSubcategoryID
 WHERE p.Color = 'Red'
 GROUP BY psc.Name
+```
 
-/* n7
-   вывести на экран название поставщика и количество товаров, которые он поставляет
- */
+### n7
+#### вывести на экран название поставщика и количество товаров, которые он поставляет
+```sql
 SELECT v.Name, count(*)
 FROM Purchasing.Vendor as v
     JOIN Purchasing.ProductVendor as pv
@@ -77,30 +82,33 @@ FROM Purchasing.Vendor as v
     JOIN Production.Product as p
         ON pv.ProductID = p.ProductID
 GROUP BY v.Name
+```
 
-/* n8
-   вывести на экран название товаров, которые поставляются более чем одним поставщиком
- */
+### n8
+#### вывести на экран название товаров, которые поставляются более чем одним поставщиком
+```sql
 SELECT p.Name
 FROM Purchasing.ProductVendor as pv
     JOIN Production.Product as p
         ON pv.ProductID = p.ProductID
 GROUP BY p.Name
 HAVING count(*) > 1
+```
 
-/* n9
-   вывести на экран название самого продаваемого товара
- */
+### n9
+#### вывести на экран название самого продаваемого товара
+```sql
 SELECT top 1 p.Name, count(*)
 FROM Purchasing.ProductVendor as pv
     JOIN Production.Product as p
         ON pv.ProductID = p.ProductID
 GROUP BY p.Name
 ORDER BY count(*) desc
+```
 
-/* n10
-   вывести на экран название категории, товары из которой продаются наиболее активно
- */
+### n10
+#### вывести на экран название категории, товары из которой продаются наиболее активно
+```sql
 SELECT top 1 pc.Name
 FROM Production.Product as p
     JOIN Production.ProductSubcategory as psc
@@ -111,10 +119,11 @@ FROM Production.Product as p
         ON p.ProductID = pv.ProductID
 GROUP BY pc.Name
 ORDER BY count(*) desc
+```
 
-/* n11
-   вывести на экран названия категорий, количество подкатегорий и количество товаров в них
- */
+### n11
+#### вывести на экран названия категорий, количество подкатегорий и количество товаров в них
+```sql
 SELECT pc.Name, count(distinct psc.ProductSubcategoryID), count(p.ProductID)
 FROM Production.Product as p
     JOIN Production.ProductSubcategory as psc
@@ -122,11 +131,11 @@ FROM Production.Product as p
     JOIN Production.ProductCategory as pc
         ON psc.ProductCategoryID = pc.ProductCategoryID
 GROUP BY pc.Name
+```
 
-/* n12
-   вывести на экран номер кредитного рейтинга и количество товаров, поставляемых компаниями,
-   имеющими этот кредитный рейтинг
- */
+### n12
+#### вывести на экран номер кредитного рейтинга и количество товаров, поставляемых компаниями, имеющими этот кредитный рейтинг
+```sql
 SELECT CreditRating, count(ProductID)
 FROM Purchasing.ProductVendor as pv
     JOIN Purchasing.Vendor as v
@@ -144,4 +153,5 @@ FROM Production.Product as p
 WHERE Color = 'Blue'
 GROUP BY p.Name, pc.Name
 HAVING count(*) = 2
+```
 
