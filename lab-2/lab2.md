@@ -44,14 +44,16 @@ GROUP BY CustomerID, OrderDate
 HAVING COUNT(*) > 1
 ```
 
-### n7 если кол-во товаров в чеке больше 3ёх 
+### n7 
+#### если кол-во товаров в чеке больше 3ёх 
 ```sql
 SELECT DISTINCT SalesOrderID
 FROM Sales.SalesOrderDetail
 WHERE OrderQty > 3
 ```
 
-### n7.2 если сам чек встречается более 3ёх раз
+### n7.2 
+#### если сам чек встречается более 3ёх раз
 ```sql
 SELECT SalesOrderID
 FROM Sales.SalesOrderDetail
@@ -91,7 +93,8 @@ GROUP BY ProductID
 HAVING max(OrderQty) = 1
 ```
 
-### n12 (т.к. гарантируется, что в одном чеке product id уникальны) 
+### n12 
+#### (т.к. гарантируется, что в одном чеке product id уникальны) 
 ```sql
 SELECT TOP 1 SalesOrderID
 FROM Sales.SalesOrderDetail
@@ -99,7 +102,8 @@ GROUP BY SalesOrderID
 ORDER BY COUNT(*) DESC
 ```
 
-### n13 (чеки с одинаковой суммой покупки "склеятся", но это не помешает найти max
+### n13 
+#### (чеки с одинаковой суммой покупки "склеятся", но это не помешает найти max
 ```sql
 SELECT TOP 1 SalesOrderID
 FROM Sales.SalesOrderDetail
@@ -107,7 +111,8 @@ GROUP BY SalesOrderID, UnitPrice * OrderQty
 ORDER BY UnitPrice * OrderQty DESC
 ```
 
-### n13.2 line total - общая цена с учётом скидки 
+### n13.2 
+##### line total - общая цена с учётом скидки 
 ```sql
 SELECT TOP 1 SalesOrderID
 FROM Sales.SalesOrderDetail
